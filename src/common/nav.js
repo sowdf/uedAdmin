@@ -53,6 +53,43 @@ export const getNavData = app => [
           }
         ],
       },
+      {
+        name: '周报',
+        icon: 'form',
+        path: 'weekly',
+        children: [
+          {
+            name: '',
+            path: 'add/:weekId',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/Add')),
+          },
+          {
+            name: '写周报',
+            path: 'add',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/Add')),
+          },
+          {
+            name: '',
+            path: 'view/:weekId',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/View')),
+          },
+          {
+            name: '我的周报',
+            path: 'my',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/All')),
+          },
+          {
+            name: '周报汇总',
+            path: 'summary',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/summaryList')),
+          },
+          {
+            name: '',
+            path: 'summaryView/:weekId',
+            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/summaryView')),
+          }
+        ],
+      },
      /* {
         name: '文档管理',
         icon: 'form',
