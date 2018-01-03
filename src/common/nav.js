@@ -53,6 +53,7 @@ export const getNavData = app => [
           }
         ],
       },
+
       {
         name: '周报',
         icon: 'form',
