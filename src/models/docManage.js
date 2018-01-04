@@ -24,9 +24,7 @@ export default {
         type: 'changeRegularFormSubmitting',
         payload: true,
       });
-      console.log(321);
       let result = yield call(docManageFindEdit, payload);
-      console.log(result);
       yield put({
         type: 'changeRegularFormSubmitting',
         payload: false,

@@ -12,16 +12,19 @@ const RadioGroup = Radio.Group;
 const { Search } = Input;
 
 @connect(state => ({
-  list: state.list,
+  list: state.userManege,
 }))
 export default class BasicList extends PureComponent {
   componentDidMount() {
     this.props.dispatch({
-      type: 'list/fetch',
+      type: 'userManege/fetch',
       payload: {
         count: 5,
       },
     });
+  }
+  jumpAdd(){
+    location.hash = '/userManage/add';
   }
 
   render() {
@@ -34,22 +37,6 @@ export default class BasicList extends PureComponent {
         {bordered && <em />}
       </div>
     );
-
-    const extraContent = (
-      <div className={styles.extraContent}>
-        <RadioGroup defaultValue="all">
-          <RadioButton value="all">全部</RadioButton>
-          <RadioButton value="progress">进行中</RadioButton>
-          <RadioButton value="waiting">等待中</RadioButton>
-        </RadioGroup>
-        <Search
-          className={styles.extraContentSearch}
-          placeholder="请输入"
-          onSearch={() => ({})}
-        />
-      </div>
-    );
-
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -57,18 +44,23 @@ export default class BasicList extends PureComponent {
       total: 50,
     };
 
-    const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
+    const ListContent = ({ data: { createdAt, email,workNumber } }) => (
       <div className={styles.listContent}>
         <div>
           <span>Owner</span>
-          <p>{owner}</p>
+          <p>admin</p>
         </div>
         <div>
-          <span>开始时间</span>
+          <span>创建时间</span>
           <p>{moment(createdAt).format('YYYY-MM-DD hh:mm')}</p>
         </div>
         <div>
-          <Progress percent={percent} status={status} strokeWidth={6} />
+          <span>email</span>
+          <p>{email || '空'}</p>
+        </div>
+        <div>
+          <span>工号</span>
+          <p>{workNumber || '空'}</p>
         </div>
       </div>
     );
@@ -92,6 +84,10 @@ export default class BasicList extends PureComponent {
       </Dropdown>
     );
 
+    const jumpEdit = (uid) =>{
+        location.hash = '/userManage/editUser/' + uid;
+    };
+
     return (
       <PageHeaderLayout>
         <div className={styles.standardList}>
@@ -112,12 +108,11 @@ export default class BasicList extends PureComponent {
           <Card
             className={styles.listCard}
             bordered={false}
-            title="标准列表"
+            title="用户列表"
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
-            extra={extraContent}
           >
-            <Button type="dashed" style={{ width: '100%', marginBottom: 8 }} icon="plus">
+            <Button type="dashed" onClick={this.jumpAdd} style={{ width: '100%', marginBottom: 8 }} icon="plus">
               添加
             </Button>
             <List
@@ -128,12 +123,12 @@ export default class BasicList extends PureComponent {
               dataSource={list}
               renderItem={item => (
                 <List.Item
-                  actions={[<a>编辑</a>, <MoreBtn />]}
+                  actions={[<a onClick={()=>jumpEdit(item.uid)}>编辑</a>, <MoreBtn />]}
                 >
                   <List.Item.Meta
-                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.title}</a>}
-                    description={item.subDescription}
+                    avatar={<Avatar src={item.avatar} shape="square" size="large" />}
+                    title={<a href={item.href}>{item.username}</a>}
+                    description={item.motto.substring(0,10)}
                   />
                   <ListContent data={item} />
                 </List.Item>

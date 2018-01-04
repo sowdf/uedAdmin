@@ -24,7 +24,6 @@ export default class BasicForms extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         values.id = this.id;
-        console.log(values);
         this.props.dispatch({
           type: 'docManage/submitEditForm',
           payload: values,

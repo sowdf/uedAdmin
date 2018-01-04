@@ -1,21 +1,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import moment from 'moment';
 import {
   Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip,
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import {docManageAdd} from '../../services/docManage';
 import styles from './style.less';
-import {queryProjectNotice} from "../../services/api";
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 @connect(state => ({
-  submitting: state.docManage.regularFormSubmitting,
-  item : state.docManage.item
+  userInfoData : state.userManege.editData,
+  submitting: state.userManege.regularFormSubmitting,
 }))
 @Form.create()
 export default class BasicForms extends PureComponent {
@@ -23,26 +21,20 @@ export default class BasicForms extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        values.id = this.id;
         this.props.dispatch({
-          type: 'docManage/submitEditForm',
+          type: 'userManege/addUserFrom',
           payload: values,
         });
       }
     });
   }
 
-  componentDidMount() {
-    this.id = this.props.match.params.id;
-    this.props.dispatch({
-      type : 'docManage/fetchItemData',
-      payload : this.id
-    })
-  }
+
   render() {
     const { submitting } = this.props;
+    const { userInfoData : {username,isAdmin,isWorking,avatar,motto,email,inTheTime,workNumber} } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const {title,cover,desc} = this.props.item;
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -63,7 +55,7 @@ export default class BasicForms extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="文档分类修改" content="将文档进行分类整理">
+      <PageHeaderLayout title={'新用户添加'}>
         <Card bordered={false}>
           <Form
             onSubmit={this.handleSubmit}
@@ -72,43 +64,41 @@ export default class BasicForms extends PureComponent {
           >
             <FormItem
               {...formItemLayout}
-              label="分类标题"
+              label="账号"
             >
-              {getFieldDecorator('title', {
-                initialValue : title,
+              {getFieldDecorator('account', {
                 rules: [{
-                  required: true, message: '请输入分类名字',
-                }],A
+                  required: true, message: '请输入账号',
+                }],
               })(
-                <Input placeholder="给分类起个名字" />
+                <Input placeholder="请输入账号" />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="分类描述"
+              label="用户名"
             >
-              {getFieldDecorator('desc', {
-                initialValue : desc,
+              {getFieldDecorator('username', {
                 rules: [{
-                  required: true, message: '请输入目标描述',
+                  required: true, message: '请输入用户名',
                 }],
               })(
-                <TextArea style={{ minHeight: 32 }} placeholder="请输入这个文档分类是做什么" rows={4} />
+                <Input placeholder="请输入用户名" />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="分类封面"
+              label="密码"
             >
-              {getFieldDecorator('cover', {
+              {getFieldDecorator('password', {
                 rules: [{
-                  initialValue : cover,
-                  required: true, message: '请输封面src',
+                  required: true, message: '请输入密码',
                 }],
               })(
-                <TextArea style={{ minHeight: 32 }} placeholder="请输入这个文档分类的封面src" rows={4}/>
+                <Input placeholder="请输入密码" />
               )}
             </FormItem>
+
             <FormItem {...submitFormLayout} style={{ marginTop: 32 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>
                 提交

@@ -17,43 +17,27 @@ export const getNavData = app => [
     path: '/',
     children: [
       {
-        name: '周报',
-        icon: 'form',
-        path: 'weekly',
+        name: '用户管理',
+        icon: 'user',
+        path: 'userManage',
         children: [
           {
-            name: '',
-            path: 'add/:weekId',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/Add')),
+            name: '所有用户',
+            path: 'allUser',
+            component: dynamicWrapper(app, ['userManege'], () => import('../routes/User/AllUser')),
           },
           {
-            name: '写周报',
+            name: '添加新用户',
             path: 'add',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/Add')),
+            component: dynamicWrapper(app, ['userManege'], () => import('../routes/User/AddUser')),
           },
           {
             name: '',
-            path: 'view/:weekId',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/View')),
-          },
-          {
-            name: '我的周报',
-            path: 'my',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/All')),
-          },
-          {
-            name: '周报汇总',
-            path: 'summary',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/summaryList')),
-          },
-          {
-            name: '',
-            path: 'summaryView/:weekId',
-            component: dynamicWrapper(app, ['weekly'], () => import('../routes/Weekly/summaryView')),
+            path: 'editUser/:uid',
+            component: dynamicWrapper(app, ['userManege'], () => import('../routes/User/UserEdit')),
           }
         ],
       },
-
       {
         name: '周报',
         icon: 'form',

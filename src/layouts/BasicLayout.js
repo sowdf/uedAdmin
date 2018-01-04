@@ -245,7 +245,6 @@ class BasicLayout extends React.PureComponent {
   }
   render() {
     const { currentUser, collapsed, fetchingNotices, getRouteData } = this.props;
-    console.log(currentUser.avatar);
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         <Menu.Item disabled><Icon type="user" />个人中心</Menu.Item>
