@@ -17,6 +17,18 @@ export const getNavData = app => [
     path: '/',
     children: [
       {
+        name: '排期系统',
+        icon: 'table',
+        path: 'scheduling',
+        children: [
+          {
+            name: '管理',
+            path: 'manage',
+            component: dynamicWrapper(app, ['scheduling'], () => import('../routes/Scheduling/Manage')),
+          },
+        ]
+      },
+      {
         name: '用户管理',
         icon: 'user',
         path: 'userManage',
